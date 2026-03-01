@@ -888,7 +888,7 @@
             <div class="contact-info">
                 <div class="contact-item scroll-animate">
                     <h4>Email</h4>
-                    <p><a href="mailto:hzaanoun23@gmail.com">hzaanoun23@gmail.com</a></p>
+                    <p><a href="mailto:hzaanoun23@gmail.com" target="_blank">hzaanoun23@gmail.com</a></p>
                 </div>
                 <div class="contact-item scroll-animate">
                     <h4>LinkedIn</h4>
@@ -896,10 +896,10 @@
                 </div>
                 <div class="contact-item scroll-animate">
                     <h4>GitHub</h4>
-                    <p><a href="https://github.com/Username10132" target="_blank">https://github.com/Username10132</a></p>
+                    <p><a href="https://github.com/Username10132" target="_blank">github.com/Username10132</a></p>
                 </div>
             </div>
-            <button class="cta-button scroll-animate"a href='mailto:hzaanoun23@gmail.com'">Send Me An Email</button>
+            <button class="cta-button scroll-animate" onclick="window.open('mailto:hzaanoun23@gmail.com')">Send Me An Email</button>
         </div>
     </section>
 
@@ -908,7 +908,7 @@
         <p>&copy; 2024 Hassan Zaanoun. All rights reserved.</p>
     </footer>
 
-    <script>
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
         // Scroll animations
         const observerOptions = {
             threshold: 0.1,
@@ -949,11 +949,4 @@
         });
 
         // Parallax effect on hero
-        window.addEventListener('scroll', () => {
-            const hero = document.querySelector('.hero');
-            const scrolled = window.scrollY;
-            hero.style.backgroundPosition = `center ${scrolled * 0.5}px`;
-        });
-    </script>
-</body>
-</html>
+        window.addEvent
