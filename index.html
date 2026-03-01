@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hassan Zaanoun - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background: #fff;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-15deg) scale(0.85);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            50% {
+                transform: translateX(-50%) translateY(15px);
+            }
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Scroll Animation Class */
+        .scroll-animate {
+            opacity: 0;
+        }
+
+        .scroll-animate.animate {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .scroll-animate.slide-left {
+            opacity: 0;
+        }
+
+        .scroll-animate.slide-left.animate {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .scroll-animate.slide-right {
+            opacity: 0;
+        }
+
+        .scroll-animate.slide-right.animate {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .scroll-animate.scale {
+            opacity: 0;
+        }
+
+        .scroll-animate.scale.animate {
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+
+        .scroll-animate.rotate {
+            opacity: 0;
+        }
+
+        .scroll-animate.rotate.animate {
+            animation: rotateIn 0.8s ease-out forwards;
+        }
+
+        /* Hero Section - Full Screen Picture */
+        .hero {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+                        url('https://via.placeholder.com/1920x1080?text=Your+Photo+Here') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+            animation: slideInLeft 1.2s ease-out;
+        }
+
+        .hero p {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 2px;
+            animation: slideInRight 1.2s ease-out 0.2s both;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+            z-index: 3;
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            animation: slideInDown 0.6s ease-out;
+        }
+
+        nav.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 0;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 2px;
+        }
+
+        nav a:hover {
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        nav a:hover::before {
+            width: 100%;
+        }
+
+        .nav-name {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+            font-size: 18px;
+            color: #1a1a1a;
+            animation: slideInLeft 0.6s ease-out;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled .nav-name {
+            font-size: 16px;
+        }
+
+        /* About Section */
+        .about {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f9f9f9;
+        }
+
+        .section-title {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #1a1a1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            animation: slideInLeft 0.8s ease-out 0.3s both;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text {
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+
+        .about-text h3 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .about-text p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            background: url('https://via.placeholder.com/500x400?text=Your+Photo') center/cover;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            animation: slideInRight 0.8s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .skill-card {
+            background: #f0f0f0;
+            padding: 30px;
+            border-radius: 12px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .skill-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .skill-card:hover::after {
+            opacity: 1;
+        }
+
+        .skill-card h4 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+
+        .skill-card:hover h4 {
+            color: white;
+        }
+
+        .skill-card p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+            transition: color 0.3s ease;
+        }
+
+        .skill-card:hover p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: #f9f9f9;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            border: 2px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-20px) rotateY(-5deg);
+            box-shadow: 0 25px 60px rgba(102, 126, 234, 0.25);
+            border-color: rgba(102, 126, 234, 0.4);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        .project-content {
+            padding: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .project-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-content h3 {
+            color: #667eea;
+        }
+
+        .project-content p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .project-card:hover .project-content p {
+            color: #555;
+        }
+
+        .project-tag {
+            display: inline-block;
+            background: #e8e8e8;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #555;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .project-card:hover .project-tag {
+            background: #667eea;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            text-align: center;
+        }
+
+        .contact-content {
+            margin-top: 40px;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .contact-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .contact-item::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 2px;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover::before {
+            opacity: 1;
+            width: 100%;
+        }
+
+        .contact-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .contact-item h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item:hover h4 {
+            color: #667eea;
+        }
+
+        .contact-item p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .contact-item a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        .contact-item a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -6px;
+            left: 0;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .contact-item a:hover {
+            color: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .contact-item a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 16px 45px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #764ba2, #667eea);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.5);
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:active {
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        footer p {
+            font-size: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .section-title {
+                font-size: 36px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-name {
+                position: static;
+                transform: none;
+                margin-bottom: 15px;
+            }
+
+            nav {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-name">Hassan Zaanoun</div>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://via.placeholder.com/1920x1080?text=Your+Photo+Here');">
+        <div class="hero-content">
+            <h1>Hassan Zaanoun</h1>
+            <p>Computer Science Student & Developer</p>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 2v16M19 15l-7 7-7-7"></path>
+            </svg>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <h2 class="section-title scroll-animate">About Me</h2>
+        <div class="about-content">
+            <div class="about-text scroll-animate slide-left">
+                <h3>Who I Am</h3>
+                <p>I'm a passionate developer and student interested in computer science, web development, and creating meaningful digital experiences. I love learning new technologies and applying them to solve real-world problems.</p>
+                <p>With a strong foundation in programming and design, I'm committed to building clean, efficient, and user-friendly applications that make a difference.</p>
+                <p>When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or working on innovative side projects.</p>
+            </div>
+            <div class="about-image scroll-animate slide-right"></div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
+        <h2 class="section-title scroll-animate">Skills & Expertise</h2>
+        <div class="skills-grid">
+            <div class="skill-card scroll-animate scale">
+                <h4>Programming Languages</h4>
+                <p>Python, JavaScript, Java, C++, HTML/CSS</p>
+            </div>
+            <div class="skill-card scroll-animate scale">
+                <h4>Web Development</h4>
+                <p>React, Node.js, MongoDB, Express, Full-stack development</p>
+            </div>
+            <div class="skill-card scroll-animate scale">
+                <h4>Design & UI/UX</h4>
+                <p>Figma, User interface design, responsive design</p>
+            </div>
+            <div class="skill-card scroll-animate scale">
+                <h4>Tools & Platforms</h4>
+                <p>Git, GitHub, VSCode, Command Line, Docker</p>
+            </div>
+            <div class="skill-card scroll-animate scale">
+                <h4>Problem Solving</h4>
+                <p>Data structures, Algorithms, System design</p>
+            </div>
+            <div class="skill-card scroll-animate scale">
+                <h4>Collaboration</h4>
+                <p>Team projects, Communication, Project management</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <h2 class="section-title scroll-animate">Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card scroll-animate rotate">
+                <div class="project-image">📱</div>
+                <div class="project-content">
+                    <h3>Project Name 1</h3>
+                    <p>Brief description of your first project. Explain what it does and the technologies used.</p>
+                    <span class="project-tag">React</span>
+                    <span class="project-tag">JavaScript</span>
+                </div>
+            </div>
+            <div class="project-card scroll-animate rotate">
+                <div class="project-image">🚀</div>
+                <div class="project-content">
+                    <h3>Project Name 2</h3>
+                    <p>Brief description of your second project. Explain what it does and the technologies used.</p>
+                    <span class="project-tag">Node.js</span>
+                    <span class="project-tag">MongoDB</span>
+                </div>
+            </div>
+            <div class="project-card scroll-animate rotate">
+                <div class="project-image">🎨</div>
+                <div class="project-content">
+                    <h3>Project Name 3</h3>
+                    <p>Brief description of your third project. Explain what it does and the technologies used.</p>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">Machine Learning</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <h2 class="section-title scroll-animate">Get In Touch</h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <div class="contact-item scroll-animate">
+                    <h4>Email</h4>
+                    <p><a href="mailto:hzaanoun23@gmail.com">hzaanoun23@gmail.com</a></p>
+                </div>
+                <div class="contact-item scroll-animate">
+                    <h4>LinkedIn</h4>
+                    <p><a href="https://www.linkedin.com/in/hassanhfr/" target="_blank">linkedin.com/in/hassanhfr</a></p>
+                </div>
+                <div class="contact-item scroll-animate">
+                    <h4>GitHub</h4>
+                    <p><a href="https://github.com/yourprofile" target="_blank">github.com/yourprofile</a></p>
+                </div>
+            </div>
+            <button class="cta-button scroll-animate" onclick="window.location.href='mailto:hzaanoun23@gmail.com'">Send Me An Email</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Hassan Zaanoun. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-animate').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Parallax effect on hero
+        window.addEventListener('scroll', () => {
+            const hero = document.querySelector('.hero');
+            const scrolled = window.scrollY;
+            hero.style.backgroundPosition = `center ${scrolled * 0.5}px`;
+        });
+    </script>
+</body>
+</html>
