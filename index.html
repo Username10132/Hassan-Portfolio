@@ -11,6 +11,107 @@
             box-sizing: border-box;
         }
 
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            gap: 40px;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.6s ease-out;
+        }
+
+        .tire-spinner {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            animation: spinTire 2s linear infinite;
+        }
+
+        @keyframes spinTire {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .tire-spinner svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 4px 8px rgba(102, 126, 234, 0.2));
+        }
+
+        .progress-container {
+            width: 300px;
+        }
+
+        .progress-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e8e8e8;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            width: 0%;
+            animation: fillProgress 3s ease-out forwards;
+            border-radius: 3px;
+        }
+
+        @keyframes fillProgress {
+            0% {
+                width: 0%;
+            }
+            90% {
+                width: 90%;
+            }
+            100% {
+                width: 100%;
+            }
+        }
+
+        .loading-text {
+            font-size: 16px;
+            color: #666;
+            letter-spacing: 1px;
+            animation: fadeInOut 3s ease-in-out;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% {
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -116,7 +217,7 @@
             z-index: 1000;
             padding: 20px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-            animation: slideInDown 0.6s ease-out;
+            animation: slideInDown 0.8s ease-out 0.3s both;
         }
 
         nav.scrolled {
@@ -170,7 +271,8 @@
             font-weight: 700;
             font-size: 18px;
             color: #1a1a1a;
-            animation: slideInLeft 0.6s ease-out;
+            animation: slideInLeft 1s ease-out 0.3s both;
+            transition: all 0.3s ease;
         }
 
         .hero {
@@ -185,6 +287,7 @@
             position: relative;
             overflow: hidden;
             padding-top: 80px;
+            animation: fadeInUp 1s ease-out 0.5s both;
         }
 
         .hero::before {
@@ -214,7 +317,7 @@
         .hero h1 {
             font-size: 72px;
             margin-bottom: 20px;
-            animation: slideInLeft 1.2s ease-out;
+            animation: slideInLeft 1s ease-out 0.7s both;
             letter-spacing: -1px;
         }
 
@@ -222,7 +325,7 @@
             font-size: 24px;
             font-weight: 300;
             letter-spacing: 2px;
-            animation: slideInRight 1.2s ease-out 0.2s both;
+            animation: slideInRight 1s ease-out 0.9s both;
         }
 
         .scroll-indicator {
@@ -665,6 +768,31 @@
     </style>
 </head>
 <body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <svg class="tire-spinner" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="45" fill="none" stroke="#667eea" stroke-width="3"/>
+            <circle cx="50" cy="50" r="35" fill="none" stroke="#764ba2" stroke-width="2" opacity="0.5"/>
+            <circle cx="50" cy="50" r="25" fill="none" stroke="#667eea" stroke-width="2" opacity="0.3"/>
+            <rect x="45" y="10" width="10" height="15" fill="#667eea" rx="2"/>
+            <rect x="45" y="75" width="10" height="15" fill="#764ba2" rx="2"/>
+            <rect x="10" y="45" width="15" height="10" fill="#667eea" rx="2"/>
+            <rect x="75" y="45" width="15" height="10" fill="#764ba2" rx="2"/>
+        </svg>
+        
+        <div class="progress-container">
+            <div class="progress-label">
+                <span>Loading Portfolio</span>
+                <span id="progressPercent">0%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+        </div>
+        
+        <p class="loading-text">Initializing systems...</p>
+    </div>
+
     <nav id="navbar">
         <div class="nav-name">Hassan Zaanoun</div>
         <ul>
@@ -792,6 +920,27 @@
     </footer>
 
     <script>
+        // Loading Screen Handler
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden');
+            }, 3500);
+        });
+
+        // Simulate percentage updates
+        let currentPercent = 0;
+        const percentDisplay = document.getElementById('progressPercent');
+        const interval = setInterval(() => {
+            if (currentPercent < 100) {
+                currentPercent += Math.random() * 30;
+                if (currentPercent > 100) currentPercent = 100;
+                percentDisplay.textContent = Math.floor(currentPercent) + '%';
+            } else {
+                clearInterval(interval);
+            }
+        }, 300);
+
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
